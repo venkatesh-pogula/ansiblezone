@@ -1,11 +1,13 @@
 [ubuntu]
 172.31.10.158
+localhost
 
 [centos]
 172.31.40.225
 
 [appserver]
 172.31.10.158
+172.31.40.225
 
-[db server]
+[dbserver]
 172.31.40.225
