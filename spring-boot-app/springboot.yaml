@@ -1,0 +1,39 @@
+---
+-  name: Deploy the springpetclinic in linux
+  hosts: appserver
+  become: yes
+  task:
+   -  name: update ubuntu and install java
+      apt:
+        name: "{{ java_packages }}"
+        update_cache: yes
+        state: yes
+   -  name: create the dircotry as springpetclinic
+      file:
+        path: "{{ app_destionation }}"
+        state: dircotry
+   -  name: copy the application from url
+       get_url:
+        path: "{{ app_download_url }}"
+        dest: "{{ app_dir/app_dest }}"
+   -  name: Create the user as springbootuser
+        user: "{{ app_user }}"
+        password: 1234
+        state: present 
+   -  name: Transfer of ownership
+       file: 
+        path: "{{ app_dir/app_dest }}"
+        owner: "{{ app_user }}"
+        mod: 500
+        state: file
+   -  name: copy the file to springpetclinic
+       copy:
+        src: "{{ app_src }}"
+        dst: /etc/systemd/system/"{{ app_src }}"
+   -  name: enble and start of springpetclinic
+       systemmd: 
+        name: "{{ app_src }}"
+         enabled: yes
+         start: started
+         
+
